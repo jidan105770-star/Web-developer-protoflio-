@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ariyan | Senior MERN Stack Architect</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome 6 CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"Fira Code"', 'monospace'],
+                    },
+                    colors: {
+                        devBg: '#040711',
+                        devSurface: '#0b1222',
+                        neonCyan: '#00f2fe',
+                        neonGreen: '#10b981',
+                        neonPurple: '#a855f7',
+                        neonAmber: '#f59e0b',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #040711;
+            color: #f1f5f9;
+            overflow-x: hidden;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        /* Subtle Developer Grid */
+        .cyber-grid {
+            background-size: 45px 45px;
+            background-image: 
+                linear-gradient(to right, rgba(0, 242, 254, 0.04) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 242, 254, 0.04) 1px, transparent 1px);
+        }
+
+        /* Glassmorphism Card Style */
+        .glass-panel {
+            background: rgba(11, 18, 34, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-panel:hover {
+            border-color: rgba(0, 242, 254, 0.35);
+            box-shadow: 0 0 30px rgba(0, 242, 254, 0.12);
+        }
+
+        /* Click Ripple Effect */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(0, 242, 254, 0.45);
+            transform: scale(0);
+            animation: ripple-anim 0.6s linear;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        @keyframes ripple-anim {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* Terminal scrollbar */
+        .terminal-scroll::-webkit-scrollbar {
+            width: 5px;
+        }
+        .terminal-scroll::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="cyber-grid relative selection:bg-cyan-500 selection:text-black">
+
+    <!-- Canvas Background: Digital Matrix & Particles -->
+    <canvas id="matrix-canvas" class="fixed top-0 left-0 w-full h-full pointer-events-none -z-10 opacity-25"></canvas>
+
+    <!-- Navigation Header -->
+    <header class="fixed top-0 left-0 w-full z-50 glass-panel border-b border-white/10 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <a href="#" class="flex items-center gap-2 group font-mono text-xl font-bold tracking-tight">
+                <span class="text-neonCyan">&lt;</span>
+                <span class="text-white group-hover:text-neonCyan transition">Ariyan</span>
+                <span class="text-neonCyan">/&gt;</span>
+                <span class="text-[10px] font-mono tracking-widest px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 uppercase ml-1">MERN Dev</span>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <div class="hidden lg:flex items-center gap-8 font-mono text-xs uppercase tracking-wider">
+                <a href="#about" class="text-slate-300 hover:text-neonCyan transition duration-200">// About</a>
+                <a href="#skills" class="text-slate-300 hover:text-neonCyan transition duration-200">// Tech Stack</a>
+                <a href="#workflow" class="text-slate-300 hover:text-neonCyan transition duration-200">// Process</a>
+                <a href="#projects" class="text-slate-300 hover:text-neonCyan transition duration-200">// Projects</a>
+                <a href="#terminal" class="text-slate-300 hover:text-neonCyan transition duration-200">// Console</a>
+                <a href="#contact" class="text-neonCyan hover:underline font-bold">// Direct Mail</a>
+            </div>
+
+            <!-- Quick Action Button -->
+            <div class="hidden md:flex items-center gap-3">
+                <a href="mailto:arafat10577023@gmail.com?subject=Project%20Inquiry%20for%20Ariyan&body=Hi%20Ariyan%2C%0A%0AI%20reviewed%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20project..." 
+                   class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-mono text-xs font-bold bg-cyan-500 text-black hover:bg-cyan-400 hover:shadow-[0_0_20px_rgba(0,242,254,0.5)] transition duration-200">
+                    <i class="fa-solid fa-paper-plane text-xs"></i> Send Message
+                </a>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button id="menu-btn" class="lg:hidden text-slate-300 hover:text-neonCyan text-xl">
+                <i class="fa-solid fa-bars-staggered"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Nav Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden pt-4 pb-2 font-mono text-sm space-y-3 border-t border-slate-800/80 mt-3">
+            <a href="#about" class="block text-slate-300 hover:text-neonCyan">About Me</a>
+            <a href="#skills" class="block text-slate-300 hover:text-neonCyan">Tech Stack</a>
+            <a href="#workflow" class="block text-slate-300 hover:text-neonCyan">Workflow</a>
+            <a href="#projects" class="block text-slate-300 hover:text-neonCyan">Projects</a>
+            <a href="#terminal" class="block text-slate-300 hover:text-neonCyan">CLI Terminal</a>
+            <a href="#contact" class="block text-neonCyan font-bold">Direct Email Box</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center pt-32 pb-20 px-6">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <!-- Left Hero Content -->
+            <div class="lg:col-span-7 space-y-6">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-panel border border-cyan-500/30 text-xs font-mono text-neonCyan">
+                    <span class="w-2.5 h-2.5 rounded-full bg-neonGreen animate-pulse"></span>
+                    <span>Status: Available For High-Performance Full-Stack Projects</span>
+                </div>
+
+                <h1 class="text-4xl sm:text-6xl font-black text-white tracking-tight leading-tight">
+                    Do MERN Stack Development with <br/>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-neonCyan via-teal-300 to-neonPurple">
+                        Ariyan
+                    </span>
+                </h1>
+
+                <!-- Typewriter Container -->
+                <div class="font-mono text-lg sm:text-xl text-slate-400 flex items-center gap-2 min-h-[32px]">
+                    <span class="text-neonCyan font-bold">&gt;</span>
+                    <span id="typewriter" class="text-slate-100 border-r-2 border-neonCyan pr-1"></span>
+                </div>
+
+                <p class="text-slate-300 text-base sm:text-lg max-w-xl leading-relaxed">
+                    Senior Full-Stack Developer with <span class="text-white font-bold underline decoration-cyan-400">4+ years of real-world experience</span>. Building high-concurrency Node.js microservices, responsive React single-page platforms, real-time WebSockets, and clean MongoDB architectures.
+                </p>
+
+                <!-- Action CTA Cluster -->
+                <div class="flex flex-wrap items-center gap-4 pt-3">
+                    <a href="#contact" class="px-7 py-3.5 rounded-xl bg-gradient-to-r from-cyan-400 to-teal-400 text-black font-mono font-bold text-sm hover:shadow-[0_0_30px_rgba(0,242,254,0.5)] transition duration-200 transform hover:-translate-y-0.5 inline-flex items-center gap-2">
+                        <i class="fa-solid fa-envelope"></i> Message Ariyan Directly
+                    </a>
+                    <a href="#projects" class="px-7 py-3.5 rounded-xl glass-panel font-mono text-sm text-slate-200 border border-slate-700 hover:border-cyan-400 transition inline-flex items-center gap-2">
+                        <i class="fa-solid fa-code"></i> Explore Projects
+                    </a>
+                </div>
+
+                <!-- Stats Badges -->
+                <div class="grid grid-cols-3 gap-4 pt-6 border-t border-slate-800 font-mono">
+                    <div class="p-3 rounded-lg bg-slate-900/40 border border-slate-800">
+                        <div class="text-2xl sm:text-3xl font-extrabold text-white">4+ Years</div>
+                        <div class="text-[11px] text-slate-400 uppercase tracking-wider mt-1">Experience</div>
+                    </div>
+                    <div class="p-3 rounded-lg bg-slate-900/40 border border-slate-800">
+                        <div class="text-2xl sm:text-3xl font-extrabold text-neonCyan">50+</div>
+                        <div class="text-[11px] text-slate-400 uppercase tracking-wider mt-1">Deployments</div>
+                    </div>
+                    <div class="p-3 rounded-lg bg-slate-900/40 border border-slate-800">
+                        <div class="text-2xl sm:text-3xl font-extrabold text-neonGreen">100%</div>
+                        <div class="text-[11px] text-slate-400 uppercase tracking-wider mt-1">Code Reliability</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Terminal / Code Window Preview -->
+            <div class="lg:col-span-5">
+                <div class="glass-panel rounded-2xl overflow-hidden border border-slate-800 shadow-2xl">
+                    <div class="bg-slate-900/90 px-4 py-3 border-b border-slate-800 flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="w-3 h-3 rounded-full bg-rose-500"></span>
+                            <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+                            <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                        </div>
+                        <span class="font-mono text-xs text-slate-400 flex items-center gap-1.5">
+                            <i class="fa-brands fa-node-js text-emerald-400"></i> dev_profile.ts
+                        </span>
+                        <span class="text-xs text-slate-500 font-mono">zsh</span>
+                    </div>
+
+                    <div class="p-5 font-mono text-xs sm:text-sm leading-relaxed overflow-x-auto text-slate-300">
+                        <p><span class="text-purple-400">interface</span> <span class="text-yellow-400">MernArchitect</span> {</p>
+                        <p class="pl-4"><span class="text-cyan-400">engineer</span>: <span class="text-emerald-400">'Ariyan'</span>;</p>
+                        <p class="pl-4"><span class="text-cyan-400">experience</span>: <span class="text-emerald-400">'4+ Years Active Building'</span>;</p>
+                        <p class="pl-4"><span class="text-cyan-400">directContact</span>: <span class="text-emerald-400">'arafat10577023@gmail.com'</span>;</p>
+                        <p class="pl-4"><span class="text-cyan-400">stack</span>: [</p>
+                        <p class="pl-8"><span class="text-emerald-400">'MongoDB Atlas'</span>, <span class="text-emerald-400">'Express.js'</span>,</p>
+                        <p class="pl-8"><span class="text-emerald-400">'React.js'</span>, <span class="text-emerald-400">'Node.js'</span>,</p>
+                        <p class="pl-8"><span class="text-emerald-400">'Next.js'</span>, <span class="text-emerald-400">'WebSockets'</span></p>
+                        <p class="pl-4">];</p>
+                        <p class="pl-4"><span class="text-cyan-400">architecture</span>: <span class="text-emerald-400">'Scalable, Clean Code, Fast APIs'</span>;</p>
+                        <p>};</p>
+                        <div class="mt-4 pt-3 border-t border-slate-800 text-slate-400 text-xs">
+                            <span class="text-neonGreen">➜</span> <span class="text-cyan-400">ariyan-core</span> git:(main) yarn build<br>
+                            <span class="text-emerald-400">✔ Optimized serverless bundles generated. Zero errors.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- About Section Deep-Dive -->
+    <section id="about" class="py-24 px-6 max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <div class="lg:col-span-6 space-y-6">
+                <span class="text-xs font-mono uppercase tracking-widest text-neonCyan">// Who is Ariyan?</span>
+                <h2 class="text-3xl sm:text-5xl font-black text-white leading-tight">
+                    Engineering Modern Web Apps from Blueprint to Production
+                </h2>
+                
+                <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                    With over <strong class="text-white">4+ continuous years of specialized full-stack engineering</strong>, I don't just build pages—I construct complete digital engines. Whether it's high-traffic platforms like dynamic web applications, interactive real-time platforms, or enterprise SaaS dashboards, I prioritize snappy client performance and bulletproof backend reliability.
+                </p>
+
+                <div class="space-y-3 font-mono text-xs sm:text-sm text-slate-300">
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-check text-neonGreen"></i>
+                        <span>High-concurrency MongoDB data modelling & aggregation</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-check text-neonGreen"></i>
+                        <span>Node & Express RESTful / GraphQL API architectures</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-check text-neonGreen"></i>
+                        <span>React, Next.js & Redux responsive single-page web apps</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-check text-neonGreen"></i>
+                        <span>Zero-downtime deployments, Docker containers & VPS tuning</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Highlights Matrix Card -->
+            <div class="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="glass-panel p-6 rounded-2xl border border-slate-800">
+                    <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-neonCyan text-xl mb-4">
+                        <i class="fa-solid fa-layer-group"></i>
+                    </div>
+                    <h4 class="text-white font-bold text-lg">Scalable Architecture</h4>
+                    <p class="text-slate-400 text-xs mt-2 leading-relaxed">
+                        Modular folders, separation of concerns, and clean service layers meant to scale smoothly.
+                    </p>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl border border-slate-800">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xl mb-4">
+                        <i class="fa-solid fa-gauge-high"></i>
+                    </div>
+                    <h4 class="text-white font-bold text-lg">Extreme Speed</h4>
+                    <p class="text-slate-400 text-xs mt-2 leading-relaxed">
+                        Lightweight frontends, optimized database indexes, and sub-100ms API response timings.
+                    </p>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl border border-slate-800">
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 text-xl mb-4">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h4 class="text-white font-bold text-lg">Secure By Design</h4>
+                    <p class="text-slate-400 text-xs mt-2 leading-relaxed">
+                        JWT/OAuth2 auth, CSRF shields, rate-limiting, and sanitized inputs against injections.
+                    </p>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl border border-slate-800">
+                    <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 text-xl mb-4">
+                        <i class="fa-solid fa-headset"></i>
+                    </div>
+                    <h4 class="text-white font-bold text-lg">Direct Collaboration</h4>
+                    <p class="text-slate-400 text-xs mt-2 leading-relaxed">
+                        No middleman. Reach me directly at <span class="text-cyan-300">arafat10577023@gmail.com</span> for instant communication.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Technical Stack Arsenal -->
+    <section id="skills" class="py-24 px-6 max-w-7xl mx-auto">
+        <div class="text-center space-y-3 mb-16">
+            <span class="text-xs font-mono uppercase tracking-widest text-neonCyan">// Core Weapons</span>
+            <h3 class="text-3xl sm:text-5xl font-black text-white">Full-Stack Stack Breakdown</h3>
+            <p class="text-slate-400 max-w-xl mx-auto text-sm sm:text-base">
+                Tools and technologies I use to build scalable web products every single day.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+            
+            <div class="glass-panel p-6 rounded-xl hover:-translate-y-1 transition duration-200 group">
+                <i class="fa-brands fa-react text-4xl text-cyan-400 mb-3 group-hover:scale-110 transition"></i>
+                <h4 class="text-white font-bold text-base">React.js</h4>
+                <p class="text-slate-400 font-mono text-xs mt-1">SPA, Context API, Hooks, Performance</p>
+            </div>
+
+            <div class="glass-panel p-6 rounded-xl hover:-translate-y-1 transition duration-200 group">
+                <i class="fa-brands fa-node-js text-4xl text-emerald-400 mb-3 group-hover:scale-110 transition"></i>
+                <h4 class="text-white font-bold text-base">Node.js</h4>
+                <p class="text-slate-400 font-mono text-xs mt-1">Event Loop, Express, Microservices</p>
+            </div>
+
+            <div class="glass-panel p-6 rounded-xl hover:-translate-y-1 transition duration-200 group">
+                <i class="fa-solid fa-database text-4xl text-green-500 mb-3 group-hover:scale-110 transition"></i>
+                <h4 class="text-white font-bold text-base">MongoDB</h4>
+                <p class="text-slate-400 font-mono text-xs mt-1">Aggregations, Atlas, Data Schemas</p>
+            </div>
+
+            <div class="glass-panel p-6 rounded-xl hover:-translate-y-1 transition duration-200 group">
+                <i class="fa-brands fa-js text-4xl text-yellow-400 mb-3 group-hover:scale-110 transition"></i>
+                <h4 class="text-white font-bold text-base">TypeScript & ES6+</h4>
+                <p class="text-slate-400 font-mono text-xs mt-1">Strict Typing, Interfaces, Async/Await</p>
+            </div>
+
+            <div class="glass-panel p-6 rounded-xl hover:-translate-y-1 transition duration-200 group">
+                <i class="fa-solid fa-server text-4xl text-purple-400 mb-3 group-hover:scale-110 transition"></i>
+                <h4 class="text-white font-bold text-base">Express.js Framework</h4>
+                <p class="text-slate-400 font-mono text-xs mt-1">Middleware, Error Handling, Routing</p>
+            </div>
+
+            <div class="glass-panel p-6 rounded-xl hover:-translate-y-1 transition duration-200 group">
+                <i class="fa-solid fa-bolt text-4xl text-amber-400 mb-3 group-hover:scale-110 transition"></i>
+                <h4 class="text-white font-bold text-base">Socket.io / Real-Time</h4>
+                <p class="text-slate-400 font-mono text-xs mt-1">Instant updates, Live rooms, Push events</p>
+            </div>
+
+            <div class="glass-panel p-6 rounded-xl hover:-translate-y-1 transition duration-200 group">
+                <i class="fa-brands fa-css3-alt text-4xl text-sky-400 mb-3 group-hover:scale-110 transition"></i>
+                <h4 class="text-white font-bold text-base">Tailwind CSS</h4>
+                <p class="text-slate-400 font-mono text-xs mt-1">Custom Cyber Themes, Responsive Layouts</p>
+            </div>
+
+            <div class="glass-panel p-6 rounded-xl hover:-translate-y-1 transition duration-200 group">
+                <i class="fa-brands fa-git-alt text-4xl text-orange-500 mb-3 group-hover:scale-110 transition"></i>
+                <h4 class="text-white font-bold text-base">Git & Production CI/CD</h4>
+                <p class="text-slate-400 font-mono text-xs mt-1">Version Control, Automated Deployments</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Workflow / 4-Step Process Section -->
+    <section id="workflow" class="py-24 px-6 max-w-7xl mx-auto">
+        <div class="text-center space-y-3 mb-16">
+            <span class="text-xs font-mono uppercase tracking-widest text-neonCyan">// Systematic Execution</span>
+            <h3 class="text-3xl sm:text-5xl font-black text-white">How I Build Your Product</h3>
+            <p class="text-slate-400 max-w-xl mx-auto text-sm sm:text-base">
+                A structured engineering pipeline that turns requirements into high-value software.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            
+            <div class="glass-panel p-6 rounded-2xl border-t-4 border-t-cyan-400 relative">
+                <span class="font-mono text-4xl font-extrabold text-cyan-400/20 absolute top-4 right-4">01</span>
+                <div class="font-mono text-xs text-neonCyan font-bold uppercase mb-2">Step 1</div>
+                <h4 class="text-white font-bold text-lg mb-2">Architecture & Spec</h4>
+                <p class="text-slate-400 text-xs leading-relaxed">
+                    Analyzing business rules, scoping database schemas, defining API endpoints, and choosing the right libraries.
+                </p>
+            </div>
+
+            <div class="glass-panel p-6 rounded-2xl border-t-4 border-t-emerald-400 relative">
+                <span class="font-mono text-4xl font-extrabold text-emerald-400/20 absolute top-4 right-4">02</span>
+                <div class="font-mono text-xs text-emerald-400 font-bold uppercase mb-2">Step 2</div>
+                <h4 class="text-white font-bold text-lg mb-2">Backend & Database</h4>
+                <p class="text-slate-400 text-xs leading-relaxed">
+                    Setting up Express/Node routes, JWT auth flow, MongoDB schema constraints, and testing API responses with Postman.
+                </p>
+            </div>
+
+            <div class="glass-panel p-6 rounded-2xl border-t-4 border-t-purple-400 relative">
+                <span class="font-mono text-4xl font-extrabold text-purple-400/20 absolute top-4 right-4">03</span>
+                <div class="font-mono text-xs text-purple-400 font-bold uppercase mb-2">Step 3</div>
+                <h4 class="text-white font-bold text-lg mb-2">Frontend Experience</h4>
+                <p class="text-slate-400 text-xs leading-relaxed">
+                    Crafting reactive, pixel-perfect React interfaces with state management, loading skeletons, and interactive animations.
+                </p>
+            </div>
+
+            <div class="glass-panel p-6 rounded-2xl border-t-4 border-t-amber-400 relative">
+                <span class="font-mono text-4xl font-extrabold text-amber-400/20 absolute top-4 right-4">04</span>
+                <div class="font-mono text-xs text-amber-400 font-bold uppercase mb-2">Step 4</div>
+                <h4 class="text-white font-bold text-lg mb-2">Audit & Live Deploy</h4>
+                <p class="text-slate-400 text-xs leading-relaxed">
+                    Running security sweeps, tuning page speed, deploying to cloud servers, configuring SSL certificates and custom domains.
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Projects Showcase Section -->
+    <section id="projects" class="py-24 px-6 max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-4">
+            <div>
+                <span class="text-xs font-mono uppercase tracking-widest text-neonCyan">// Real Deployments</span>
+                <h3 class="text-3xl sm:text-5xl font-black text-white mt-1">Featured Production Projects</h3>
+            </div>
+            <div class="font-mono text-xs text-slate-400">
+                Live URLs & Verified Architecture
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            
+            <!-- FLAGSHIP: PrimxBet -->
+            <div class="glass-panel rounded-3xl overflow-hidden border border-cyan-500/40 hover:border-cyan-400 transition-all duration-300 flex flex-col justify-between group">
+                <div class="p-8">
+                    <div class="flex items-center justify-between mb-5">
+                        <span class="text-xs font-mono font-bold px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/30">
+                            ★ Flagship Live Project
+                        </span>
+                        <a href="https://primxbet.cfd" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-white transition">
+                            <i class="fa-solid fa-arrow-up-right-from-square text-lg"></i>
+                        </a>
+                    </div>
+
+                    <h4 class="text-2xl sm:text-3xl font-extrabold text-white group-hover:text-neonCyan transition">
+                        PrimxBet - Dynamic Gaming & Live Platform
+                    </h4>
+
+                    <p class="text-slate-300 text-sm mt-4 leading-relaxed">
+                        A full-scale, dynamic web platform developed with responsiveness, high concurrency, and live user interactions in mind. Designed with a custom backend handling real-time data flow, dynamic account management, responsive interfaces, and transaction security.
+                    </p>
+
+                    <div class="flex flex-wrap gap-2 mt-6 font-mono text-xs">
+                        <span class="px-3 py-1 rounded bg-slate-900 text-cyan-300 border border-slate-700">React.js</span>
+                        <span class="px-3 py-1 rounded bg-slate-900 text-cyan-300 border border-slate-700">Node.js</span>
+                        <span class="px-3 py-1 rounded bg-slate-900 text-cyan-300 border border-slate-700">Express API</span>
+                        <span class="px-3 py-1 rounded bg-slate-900 text-cyan-300 border border-slate-700">MongoDB</span>
+                        <span class="px-3 py-1 rounded bg-slate-900 text-cyan-300 border border-slate-700">Dynamic UI</span>
+                    </div>
+                </div>
+
+                <div class="p-8 pt-0">
+                    <a href="https://primxbet.cfd" target="_blank" rel="noopener noreferrer" 
+                       class="w-full inline-flex items-center justify-center gap-2 py-4 rounded-xl bg-neonCyan text-black font-mono font-bold text-sm hover:bg-cyan-400 hover:shadow-[0_0_25px_rgba(0,242,254,0.4)] transition">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i> Launch Live Application: primxbet.cfd
+                    </a>
+                </div>
+            </div>
+
+            <!-- SECOND PROJECT: Realtime Dashboard -->
+            <div class="glass-panel rounded-3xl overflow-hidden border border-slate-800 hover:border-slate-700 transition duration-300 flex flex-col justify-between group">
+                <div class="p-8">
+                    <div class="flex items-center justify-between mb-5">
+                        <span class="text-xs font-mono font-bold px-3 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700">
+                            Enterprise SaaS Infrastructure
+                        </span>
+                        <span class="text-xs font-mono text-slate-500">4+ Years Stack</span>
+                    </div>
+
+                    <h4 class="text-2xl sm:text-3xl font-extrabold text-white group-hover:text-cyan-300 transition">
+                        Full-Stack SaaS Analytics & Admin Command Center
+                    </h4>
+
+                    <p class="text-slate-300 text-sm mt-4 leading-relaxed">
+                        Comprehensive control panel featuring role-based authorization (RBAC), multi-tenant database clusters, real-time metrics visualizer, automated transactional webhooks, and secure user session management.
+                    </p>
+
+                    <div class="flex flex-wrap gap-2 mt-6 font-mono text-xs">
+                        <span class="px-3 py-1 rounded bg-slate-900 text-slate-300 border border-slate-700">Next.js / SSR</span>
+                        <span class="px-3 py-1 rounded bg-slate-900 text-slate-300 border border-slate-700">Tailwind CSS</span>
+                        <span class="px-3 py-1 rounded bg-slate-900 text-slate-300 border border-slate-700">MongoDB Atlas</span>
+                        <span class="px-3 py-1 rounded bg-slate-900 text-slate-300 border border-slate-700">Redis Cache</span>
+                    </div>
+                </div>
+
+                <div class="p-8 pt-0">
+                    <a href="mailto:arafat10577023@gmail.com?subject=Inquiry%20about%20SaaS%20Projects%20-%20Ariyan" 
+                       class="w-full inline-flex items-center justify-center gap-2 py-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-mono font-semibold text-sm transition">
+                        <i class="fa-solid fa-envelope"></i> Inquire Code Specs & Architecture
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Interactive Developer CLI Terminal Section -->
+    <section id="terminal" class="py-24 px-6 max-w-5xl mx-auto">
+        <div class="text-center space-y-3 mb-10">
+            <span class="text-xs font-mono uppercase tracking-widest text-neonCyan">// Interactive CLI</span>
+            <h3 class="text-3xl sm:text-4xl font-black text-white">Execute Commands on Ariyan's Terminal</h3>
+            <p class="text-slate-400 text-xs sm:text-sm">Click the shortcut buttons below or type directly into the terminal prompt.</p>
+        </div>
+
+        <div class="glass-panel rounded-2xl overflow-hidden border border-slate-700 shadow-2xl">
+            <!-- Terminal Header -->
+            <div class="bg-slate-900 px-4 py-3 border-b border-slate-800 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-full bg-rose-500"></span>
+                    <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+                    <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                </div>
+                <div class="font-mono text-xs text-slate-400">ariyan@portfolio: ~ (interactive shell)</div>
+                <button onclick="clearTerminal()" class="font-mono text-[11px] text-slate-500 hover:text-white transition">clear</button>
+            </div>
+
+            <!-- Terminal Quick Commands Buttons -->
+            <div class="p-3 bg-slate-950/80 border-b border-slate-800/80 flex flex-wrap gap-2 font-mono text-xs">
+                <span class="text-slate-500 py-1">Quick Run:</span>
+                <button onclick="runCommand('about')" class="px-2.5 py-1 rounded bg-slate-800 text-cyan-400 hover:bg-slate-700 border border-slate-700">about</button>
+                <button onclick="runCommand('skills')" class="px-2.5 py-1 rounded bg-slate-800 text-emerald-400 hover:bg-slate-700 border border-slate-700">skills</button>
+                <button onclick="runCommand('projects')" class="px-2.5 py-1 rounded bg-slate-800 text-purple-400 hover:bg-slate-700 border border-slate-700">projects</button>
+                <button onclick="runCommand('email')" class="px-2.5 py-1 rounded bg-slate-800 text-amber-400 hover:bg-slate-700 border border-slate-700">email</button>
+            </div>
+
+            <!-- Terminal Output Window -->
+            <div id="terminal-output" class="p-5 font-mono text-xs sm:text-sm leading-relaxed max-h-72 min-h-[220px] overflow-y-auto terminal-scroll text-slate-300 space-y-2">
+                <p class="text-slate-400">Welcome to Ariyan's MERN environment v4.0.0. Type <span class="text-neonCyan">'help'</span> for a list of commands.</p>
+            </div>
+
+            <!-- Terminal Input Prompt -->
+            <form id="terminal-form" class="p-4 bg-slate-950 flex items-center gap-3 border-t border-slate-800">
+                <span class="text-neonGreen font-mono font-bold">ariyan@terminal:~$</span>
+                <input id="terminal-input" type="text" autocomplete="off" placeholder="type a command (e.g. skills, contact, clear)..." 
+                       class="flex-1 bg-transparent border-none text-white font-mono text-xs sm:text-sm focus:outline-none">
+                <button type="submit" class="text-xs font-mono text-cyan-400 uppercase tracking-widest px-3 py-1 bg-cyan-950/50 rounded border border-cyan-800">Run</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- NEW CONTACT SECTION: Direct Mailbox & Instant Message Box -->
+    <section id="contact" class="py-24 px-6 max-w-4xl mx-auto">
+        <div class="glass-panel rounded-3xl p-8 sm:p-14 border border-cyan-500/40 relative overflow-hidden">
+            <!-- Glowing ambient background circle -->
+            <div class="absolute -top-10 -right-10 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="text-center space-y-4 mb-10">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-xs font-mono text-neonCyan">
+                    <i class="fa-solid fa-satellite-dish"></i> Direct Communication Terminal
+                </div>
+                <h3 class="text-3xl sm:text-5xl font-black text-white">Send Message Directly</h3>
+                <p class="text-slate-300 max-w-lg mx-auto text-sm sm:text-base leading-relaxed">
+                    No complicated forms or waiting for server dispatchers. Click the button below to immediately open your email client pre-addressed to <strong class="text-white">Ariyan</strong>.
+                </p>
+            </div>
+
+            <!-- Email Display & Action Console -->
+            <div class="p-6 sm:p-8 rounded-2xl bg-slate-950/90 border border-slate-800 text-center space-y-6">
+                
+                <div class="space-y-1">
+                    <span class="text-xs font-mono text-slate-500 uppercase tracking-wider">Recipient Direct Address</span>
+                    <div class="font-mono text-lg sm:text-2xl font-bold text-neonCyan tracking-wide break-all">
+                        arafat10577023@gmail.com
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                    <!-- MAIN BUTTON: Directly opens viewer's email application with pre-addressed fields -->
+                    <a href="mailto:arafat10577023@gmail.com?subject=Project%20Inquiry%20-%20MERN%20Stack%20Development&body=Hello%20Ariyan%2C%0A%0AI%20am%20interested%20in%20working%20with%20you%20on%20a%20MERN%20stack%20project.%0A%0AHere%20are%20my%20project%20details%3A%0A%0A-%20Project%20Type%3A%0A-%20Timeline%3A%0A-%20Budget%20Estimate%3A%0A%0ALooking%20forward%20to%20your%20reply."
+                       class="py-4 px-6 rounded-xl bg-gradient-to-r from-neonCyan to-teal-400 text-black font-mono font-bold text-sm hover:shadow-[0_0_30px_rgba(0,242,254,0.5)] transition duration-200 inline-flex items-center justify-center gap-3">
+                        <i class="fa-solid fa-paper-plane text-base"></i> Launch Mail Client
+                    </a>
+
+                    <!-- SECONDARY BUTTON: One-click clipboard copy with visual notification -->
+                    <button id="copy-email-btn" onclick="copyEmailToClipboard()" 
+                            class="py-4 px-6 rounded-xl glass-panel border border-slate-700 hover:border-cyan-400 text-white font-mono font-semibold text-sm transition inline-flex items-center justify-center gap-2">
+                        <i class="fa-regular fa-clone"></i> <span id="copy-btn-text">Copy Email Address</span>
+                    </button>
+                </div>
+
+                <!-- Toast feedback indicator -->
+                <div id="copy-toast" class="hidden font-mono text-xs text-neonGreen pt-2">
+                    <i class="fa-solid fa-circle-check mr-1"></i> Copied "arafat10577023@gmail.com" to your clipboard!
+                </div>
+            </div>
+
+            <!-- Guarantee Badges -->
+            <div class="grid grid-cols-3 gap-2 mt-8 text-center font-mono text-slate-400 text-[11px]">
+                <div><i class="fa-solid fa-clock text-cyan-400 mb-1 block"></i> Fast Reply &lt; 24h</div>
+                <div><i class="fa-solid fa-lock text-emerald-400 mb-1 block"></i> NDA Protected</div>
+                <div><i class="fa-solid fa-bolt text-purple-400 mb-1 block"></i> 4+ Years Certified</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-slate-900 bg-slate-950 px-6 font-mono text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-2">
+                <span class="text-neonCyan">&lt;/&gt;</span>
+                <span class="text-white font-bold">Ariyan</span>
+                <span>• Senior MERN Stack Architect (4+ Years Exp)</span>
+            </div>
+            <div>
+                Direct: <a href="mailto:arafat10577023@gmail.com" class="text-slate-400 hover:text-neonCyan transition">arafat10577023@gmail.com</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Scripts: Typewriter, Canvas Matrix Nodes, Interactive CLI, Copy Trigger -->
+    <script>
+        // 1. Dynamic Typewriter Effect
+        const phrases = [
+            "Senior MERN Stack Developer.",
+            "4+ Years of Production Experience.",
+            "Architecting Real-Time Web Apps.",
+            "MongoDB, Express, React, Node.js Specialist.",
+            "Built & Deployed primxbet.cfd."
+        ];
+        let pIndex = 0;
+        let cIndex = 0;
+        let isDeleting = false;
+        const typewriterEl = document.getElementById("typewriter");
+
+        function typeLoop() {
+            const current = phrases[pIndex];
+            if (isDeleting) {
+                typewriterEl.textContent = current.substring(0, cIndex - 1);
+                cIndex--;
+            } else {
+                typewriterEl.textContent = current.substring(0, cIndex + 1);
+                cIndex++;
+            }
+
+            let speed = isDeleting ? 30 : 65;
+
+            if (!isDeleting && cIndex === current.length) {
+                speed = 2000;
+                isDeleting = true;
+            } else if (isDeleting && cIndex === 0) {
+                isDeleting = false;
+                pIndex = (pIndex + 1) % phrases.length;
+                speed = 400;
+            }
+
+            setTimeout(typeLoop, speed);
+        }
+        document.addEventListener("DOMContentLoaded", typeLoop);
+
+        // 2. Click Ripple Animation
+        document.addEventListener("click", function(e) {
+            // Avoid creating ripple on pure text inputs
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+            const ripple = document.createElement("div");
+            ripple.className = "ripple";
+            ripple.style.left = `${e.pageX - 10}px`;
+            ripple.style.top = `${e.pageY - 10}px`;
+            ripple.style.width = "20px";
+            ripple.style.height = "20px";
+            document.body.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+        });
+
+        // 3. Matrix & Node Canvas Background
+        const canvas = document.getElementById("matrix-canvas");
+        const ctx = canvas.getContext("2d");
+
+        function setCanvasDimensions() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener("resize", setCanvasDimensions);
+        setCanvasDimensions();
+
+        const chars = "010101<>{}/*$#MERNARIYAN";
+        const fontSize = 14;
+        let columns = Math.floor(canvas.width / fontSize);
+        let drops = Array(columns).fill(1);
+
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(4, 7, 17, 0.15)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = "#00f2fe";
+            ctx.font = `${fontSize}px 'Fira Code', monospace`;
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars.charAt(Math.floor(Math.random() * chars.length));
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 45);
+
+        // 4. One-Click Copy Email to Clipboard
+        function copyEmailToClipboard() {
+            const email = "arafat10577023@gmail.com";
+            navigator.clipboard.writeText(email).then(() => {
+                const toast = document.getElementById("copy-toast");
+                const btnText = document.getElementById("copy-btn-text");
+                
+                toast.classList.remove("hidden");
+                btnText.textContent = "Email Copied!";
+                
+                setTimeout(() => {
+                    toast.classList.add("hidden");
+                    btnText.textContent = "Copy Email Address";
+                }, 3500);
+            }).catch(err => {
+                alert("Failed to copy. Please manually email: " + email);
+            });
+        }
+
+        // 5. Interactive CLI Terminal Implementation
+        const terminalOutput = document.getElementById("terminal-output");
+        const terminalForm = document.getElementById("terminal-form");
+        const terminalInput = document.getElementById("terminal-input");
+
+        const commands = {
+            help: "Available commands: 'about', 'skills', 'experience', 'projects', 'email', 'contact', 'clear'",
+            about: "Ariyan: Senior MERN Stack Architect with 4+ years building high-concurrency web apps.",
+            skills: "Core Stack: MongoDB, Express.js, React.js, Node.js, Next.js, WebSockets, Tailwind, TypeScript.",
+            experience: "4+ continuous years in software development, API design, and cloud releases.",
+            projects: "Featured project: PrimxBet (https://primxbet.cfd) - dynamic full-stack web application.",
+            email: "Direct developer mailbox: arafat10577023@gmail.com",
+            contact: "Opening mail client to: arafat10577023@gmail.com..."
+        };
+
+        function runCommand(cmd) {
+            cmd = cmd.trim().toLowerCase();
+            const promptLine = document.createElement("p");
+            promptLine.innerHTML = `<span class="text-neonGreen">ariyan@terminal:~$</span> ${cmd}`;
+            terminalOutput.appendChild(promptLine);
+
+            if (cmd === 'clear') {
+                terminalOutput.innerHTML = '';
+                return;
+            }
+
+            const response = document.createElement("p");
+            if (commands[cmd]) {
+                response.className = "text-cyan-300";
+                response.textContent = commands[cmd];
+
+                if (cmd === 'contact') {
+                    setTimeout(() => {
+                        window.location.href = "mailto:arafat10577023@gmail.com";
+                    }, 800);
+                }
+            } else {
+                response.className = "text-rose-400";
+                response.textContent = `bash: command not found: ${cmd}. Type 'help' for options.`;
+            }
+
+            terminalOutput.appendChild(response);
+            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+        }
+
+        terminalForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const val = terminalInput.value;
+            if (val.trim()) {
+                runCommand(val);
+                terminalInput.value = '';
+            }
+        });
+
+        function clearTerminal() {
+            terminalOutput.innerHTML = '<p class="text-slate-400">Terminal cleared. Type <span class="text-neonCyan">\'help\'</span> for commands.</p>';
+        }
+
+        // 6. Mobile Menu Toggle
+        const menuBtn = document.getElementById("menu-btn");
+        const mobileMenu = document.getElementById("mobile-menu");
+        menuBtn.addEventListener("click", () => {
+            mobileMenu.classList.toggle("hidden");
+        });
+    </script>
+</body>
+  </html>
